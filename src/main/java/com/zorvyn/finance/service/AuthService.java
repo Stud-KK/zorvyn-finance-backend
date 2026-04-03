@@ -6,6 +6,7 @@ import com.zorvyn.finance.entity.Role;
 import com.zorvyn.finance.entity.Status;
 import com.zorvyn.finance.entity.User;
 import com.zorvyn.finance.repository.UserRepository;
+import com.zorvyn.finance.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,8 @@ public class AuthService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private JwtUtil jwtUtil;
 
     public String register(RegisterRequest request) {
 
@@ -30,6 +33,8 @@ public class AuthService {
         return "User registered successfully";
     }
 
+
+
     public String login(LoginRequest request) {
 
         User user = userRepository.findByEmail(request.getEmail())
@@ -39,6 +44,6 @@ public class AuthService {
             throw new RuntimeException("Invalid credentials");
         }
 
-        return "Login successful";
+        return jwtUtil.generateToken(user.getEmail());
     }
 }
