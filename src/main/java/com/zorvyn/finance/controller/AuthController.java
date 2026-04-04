@@ -4,6 +4,7 @@ import com.zorvyn.finance.dto.auth.LoginRequest;
 import com.zorvyn.finance.dto.auth.RegisterRequest;
 import com.zorvyn.finance.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,7 +20,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
+
     public String login(@RequestBody LoginRequest request) {
         return authService.login(request);
     }
+
+
 }
