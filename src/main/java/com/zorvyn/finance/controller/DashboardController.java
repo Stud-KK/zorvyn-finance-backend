@@ -22,4 +22,11 @@ public class DashboardController {
     public Map<String, Object> getDashboard(Authentication auth) {
         return dashboardService.getDashboard(auth.getName());
     }
+    @GetMapping("/net")
+    @PreAuthorize("hasAnyRole('ADMIN','ANALYST')")
+    public Double netBalance(Authentication authentication) {
+
+        String email = authentication.getName();
+        return dashboardService.getNetBalance(email);
+    }
 }

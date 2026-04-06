@@ -1,5 +1,6 @@
 package com.zorvyn.finance.service;
 
+import com.zorvyn.finance.entity.RecordType;
 import com.zorvyn.finance.entity.User;
 import com.zorvyn.finance.repository.RecordRepository;
 import com.zorvyn.finance.repository.UserRepository;
@@ -57,6 +58,15 @@ import java.util.Map;
 
             return response;
         }
+        public Double getNetBalance(String email) {
 
+            User user = userRepository.findByEmail(email)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+
+            Double income = recordRepository.sumByTypeAndUser(RecordType.INCOME, user);
+            Double expense = recordRepository.sumByTypeAndUser(RecordType.EXPENSE, user);
+
+            return income - expense;
+        }
 }
 
