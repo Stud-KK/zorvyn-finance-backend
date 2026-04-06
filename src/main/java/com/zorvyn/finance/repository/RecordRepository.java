@@ -5,6 +5,7 @@ import com.zorvyn.finance.entity.RecordType;
 import com.zorvyn.finance.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -31,6 +32,9 @@ public interface RecordRepository extends JpaRepository<Record, Long> {
 
     @Query("SELECT MONTH(r.date), SUM(r.amount) FROM Record r WHERE r.user = :user GROUP BY MONTH(r.date)")
     List<Object[]> getMonthlySummary(User user);
+
+    @Query("SELECT COALESCE(SUM(r.amount),0) FROM Record r WHERE r.type = :type AND r.user = :user")
+    Double sumByTypeAndUser(@Param("type") RecordType type, @Param("user") User user);
 
 
 
